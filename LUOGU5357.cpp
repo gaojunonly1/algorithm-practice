@@ -30,7 +30,7 @@ vector<char>ss;
 
 class ACAM {
 public:
-	int syf[N1*26];
+	int syf[N1];
 	void Init(int nn) {
 		n=nn;
 		cnt=0;
