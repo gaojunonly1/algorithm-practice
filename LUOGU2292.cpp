@@ -28,14 +28,19 @@ char s[LEN];
 vector<char>tt;
 vector<char>ss;
 
+
 class ACAM {
 public:
 	vector<char>s1;
-	int syf[LEN];
+	bitset<21> syf[N1],jyl[LEN],gj[LEN];
 	void Init(int nn) {
+		int i;
 		n=nn;
 		cnt=0;
 		memset(ref,0,sizeof ref);
+		fz1(i,400) {
+			syf[i].reset();
+		}
 	}
 	void Insert(const vector<char>t) {
 		int cur=0;
@@ -47,6 +52,7 @@ public:
 			cur=Trie[cur].son[oo];
 		}
 		ref[cur]=t.size();
+		syf[cur]|=1<<(t.size()-1);
 	}
 	void Build() {
 		int i;
@@ -58,6 +64,7 @@ public:
 		}
 		while(!que.empty()) {
 			int u=que.front();
+			syf[u]|=syf[Trie[u].fail];
 			fz0k(i,26) {
 				if(Trie[u].son[i]) {
 					Trie[Trie[u].son[i]].fail=Trie[Trie[u].fail].son[i];
@@ -74,30 +81,27 @@ public:
 		int i;
 		int cur=0;
 		fz0k(i,s1.size()) {
-			int oo=(int)(s1[i]-'a');
-			cur=Trie[cur].son[oo];
-			int now=cur;
-			for(;now!=0;now=Trie[now].fail) {
-				if(ref[now]&&syf[i+1-ref[now]]==id) {
-					syf[i+1]=id;
-					break;
-				}
-			}
+			cur=Trie[cur].son[(int)s1[i]-'a'];
+			jyl[i+1]=syf[cur];
 		}
 	}
 	void Solve(vector<char>ss,int id) {
-		int i;
+		int i,j;
 		s1=ss;
-		syf[0]=id;
 		Query(id);
-		int gj=0;
-		fd0k(i,s1.size()) {
-			if(syf[i+1]==id) {
-				gj=i+1;
+		gj[0]=1;
+		fz1(i,ss.size()) {
+			gj[i]=gj[i-1]<<1;
+			if((jyl[i]&gj[i-1]).count()) {
+				gj[i][0]=1;
+			}
+		}
+		fd0g(i,ss.size()) {
+			if(gj[i][0]) {
+				printf("%d\n",i);
 				break;
 			}
 		}
-		printf("%d\n",gj);
 	}
 private:
 	int n;
