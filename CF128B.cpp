@@ -43,7 +43,7 @@ void dfs(int u);
 void add(int u,int v);
 void query(ll T);
 int main() {
-	freopen("test.in","r",stdin);
+//	freopen("test.in","r",stdin);
 	int i,j;
 	int o;
 	scanf("%s",s);
@@ -101,18 +101,6 @@ void extend(int c) {
 			}
 		}
 	}
-}
-void dfs(int u) {
-	for(int i=head[u];i!=0;i=Next[i]) {
-		int v=to[i];
-		dfs(v);
-		syf[u]+=syf[v];
-	}
-}
-void add(int u,int v) {
-	Next[++ecnt]=head[u];
-	to[ecnt]=v;
-	head[u]=ecnt;
 }
 void query(ll T) {
 	int i;
